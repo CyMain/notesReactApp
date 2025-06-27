@@ -1,0 +1,15 @@
+body{
+    --accent1: 238, 238, 238;
+    --accent2: 231, 150, 0;
+    --accent3: 167, 167, 167;
+    --accent4: 151, 113, 78;
+    --text-color1: 31, 31, 31;
+}
+
+body.dark-mode{
+    --accent1: 0, 0, 28;
+    --accent2: 0, 56, 176;
+    --accent3: 36, 36, 59;
+    --accent4: 40, 40, 87;
+    --text-color1: 205, 205, 205;
+}

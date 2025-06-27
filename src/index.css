@@ -1,0 +1,25 @@
+*{
+    color: rgb(var(--text-color1));
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: monospace;
+}
+
+body{
+    width: 100vw;
+    height: 100dvh;
+    background-color: rgb(var(--accent1));
+}
+
+
+button{
+    border: none;
+    cursor: pointer;
+    background: rgb(var(--accent2));
+    color: rgb(var(--text-color1));
+}
+
+a{
+    text-decoration: none;
+}
