@@ -1,3 +1,25 @@
+.edit-note-view{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem;
+    input, textarea{
+        background: transparent;
+        border: none;
+    }
+
+    input{
+        display: flex;
+        align-items: center;
+        height: 2rem;
+        padding: 0 0.5rem;
+    }
+    textarea{
+        border-top: 1px solid whitesmoke;
+        height: 100%;
+        padding: 1rem 0.5rem;
+    }
+}
+
 .notes-view{
     display: flex;
     flex-direction: column;
@@ -75,7 +97,11 @@
 
 @media (max-width:400px) {
     .notes-view{
+        display: none;
         padding: 22dvh 1rem 3.5rem 1rem;
+    }
+    header{
+        display: none;
     }
 
     .notes-grid{

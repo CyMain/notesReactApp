@@ -45,44 +45,56 @@ function Notes(){
             group:"",
         },
     ]);
+    const [groups, setGroups]= useState([
+        {
+            name:'Development',
+            containedNotesIndexes:[],
+        },
+    ])
     return(
-        <div className="notes-view">
-            <nav className="sections">
-                <div className="left-nav">
-                    <span className="nav-option">Notes</span>
-                    <span className="nav-option">Favourites</span>
-                </div>
-                <div className="right-nav">
-                    <figure className="nav-option">
-                        <div>Filter Icon</div>
-                    </figure>
-                    <figure className="nav-option">
-                        <div>Another ICON</div>
-                    </figure>
-                </div>
-            </nav>
-            <div className="notes-grid">
-                {notes.map((note, i)=>
-                    <div className="note" key={i}>
-                        <h1>{note.title}</h1>
-                        <p>{note.content}</p>
-                        <span>{note.date}</span>
-                        <div className="note-bottom">
-                            <span>{note.group ? note.group : "No Group" }</span>
-                            <div className="note-buttons">
-                                <figure>
-                                    Trash Icon
-                                </figure>
-                                <figure>
-                                    Favourite Icon
-                                </figure>
-                            </div>
-                        </div>
-                        
+        <>
+            <div className="notes-view">
+                <nav className="sections">
+                    <div className="left-nav">
+                        <span className="nav-option">Notes</span>
+                        <span className="nav-option">Favourites</span>
                     </div>
-                )}
+                    <div className="right-nav">
+                        <figure className="nav-option">
+                            <div>Filter Icon</div>
+                        </figure>
+                        <figure className="nav-option">
+                            <div>Another ICON</div>
+                        </figure>
+                    </div>
+                </nav>
+                <div className="notes-grid">
+                    {notes.map((note, i)=>
+                        <div className="note" key={i}>
+                            <h1>{note.title}</h1>
+                            <p>{note.content}</p>
+                            <span>{note.date}</span>
+                            <div className="note-bottom">
+                                <span>{note.group ? note.group : "No Group" }</span>
+                                <div className="note-buttons">
+                                    <figure>
+                                        Trash Icon
+                                    </figure>
+                                    <figure>
+                                        Favourite Icon
+                                    </figure>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    )}
+                </div>
             </div>
-        </div>
+            <div className="edit-note-view">
+                <input type="text" placeholder="Enter a title..."/>
+                <textarea name="" id="" placeholder="Your Note..."></textarea>
+            </div>
+        </>
     )
 
 }
