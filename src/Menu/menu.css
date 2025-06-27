@@ -197,7 +197,7 @@ header{
     }
 
     .options-mobile{
-        display: none;
+        display: flex;
 
     }
     .options-lg{

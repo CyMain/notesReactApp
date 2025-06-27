@@ -71,7 +71,7 @@ function Notes(){
                             <span>{note.group ? note.group : "No Group" }</span>
                             <div className="note-buttons">
                                 <figure>
-                                    Share Icon
+                                    Trash Icon
                                 </figure>
                                 <figure>
                                     Favourite Icon
