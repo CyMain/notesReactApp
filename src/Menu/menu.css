@@ -38,7 +38,7 @@ header{
     background: rgb(var(--accent3));
     border:none;
     border-radius: 0.6rem;
-    height: 1.6rem;
+    min-height: 1.5rem;
     padding: 0 1rem;
     &:focus{
         outline: none;
@@ -53,11 +53,11 @@ header{
 
 .options-mobile{
     position: relative;
-    height: 4rem;
+    height: 3.5rem;
     justify-content: space-between;
-    padding: 1rem 3rem 0;
+    
     .options-mobile-left, .options-mobile-right{
-        background: red;
+        background: rgb(var(--accent4));
         flex: 1;
         display: flex;
         justify-content: space-around;
@@ -65,7 +65,7 @@ header{
 
     .add-note-btn{
         position: absolute;
-        top: 0rem;
+        top: -1rem;
         left: 50%;
         width: 2rem;
         height: 2rem;
@@ -184,17 +184,38 @@ header{
     header{
         position: relative;
     }
+
+    .pfp{
+        width: 2.5rem;
+        height: 2.5rem;
+        img{
+            border-radius: 0.3rem;
+        }
+    }
+    .profile{
+        font-size: 0.8rem;
+    }
+
     .options-mobile{
-        display: flex;
+        display: none;
+
     }
     .options-lg{
         display: none;
     }
 
     .header-top{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header-top{
+        padding: 0.5rem 1rem;
         width: 100%;
         position: fixed;
         top: 0;
+        height: 20dvh;
+        gap: 0.5rem;
     }
     .header-bottom{
         position: fixed;
