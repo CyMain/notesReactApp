@@ -63,6 +63,18 @@ header{
         display: flex;
         justify-content: space-around;
     }
+    .sm-menu-icon, .add-note-btn{
+        cursor: pointer;
+    }
+    .sm-menu-icon{
+        width: 1.5rem;
+        height: 1.5rem;
+        &:hover{
+            svg{
+                fill: rgb(var(--accent1));
+            }
+        }
+    }
 
     .add-note-btn{
         position: absolute;
@@ -72,6 +84,14 @@ header{
         height: 2rem;
         border-radius: 50%;
         transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg{
+            width: 100%;
+            height: 100%;
+            fill: rgb(var(--text-color1));
+        }
     }
 
     .options-mobile-left{
@@ -192,6 +212,17 @@ header{
                 &:hover{
                     background: rgb(var(--accent4));
                 }
+                a{
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: start;
+                    gap: 0.5rem;
+                }
+            }
+            figure{
+                width: 1rem;
+                height: 1rem;
             }
         }
     }
