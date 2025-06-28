@@ -26,7 +26,6 @@ function Notes(){
             containedNotesIndexes:[],
         },
     ]);
-
     // function toggleEditView(){
     //     console.log("toggled");
     //     console.log(editView.current.style.display, notesView.current);
@@ -41,6 +40,15 @@ function Notes(){
     //     }
     //     console.log(editView.current.style.display, notesView.current);
     // }  
+
+    useEffect(() => {
+        if (headerRef && headerRef.current) {
+            document.querySelector("#root").style.setProperty(
+                '--header-width',
+                headerRef.current.offsetWidth + 'px'
+            );
+        }
+    }, [headerRef]);
 
     function filterAll(){
         setCurrNotes(c => [...notes]);

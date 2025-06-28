@@ -7,6 +7,7 @@ export const nameContext = createContext();
 
 function MainComponent(){
 
+    
     const [hasName, setHasName] = useState();
     const name = useRef(null);
     const editView = useRef(null);
