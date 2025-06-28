@@ -9,6 +9,11 @@ function MainComponent(){
 
     const [hasName, setHasName] = useState();
     const name = useRef(null);
+    const editView = useRef(null);
+    const notesView = useRef(null);
+    const headerRef = useRef(null);
+
+
 
     function handleNameEntry(){
         const nameEntryInp = document.querySelector('.name-entry-inp');
@@ -47,10 +52,10 @@ function MainComponent(){
         console.log(name.current)
         return(
             <>
-                <nameContext.Provider value = {name.current}>
-                    <Menu name={name.current}/>
+                <nameContext.Provider value = {{name: name.current, editView, notesView, headerRef}}>
+                    <Menu/>
+                    <Notes/>
                 </nameContext.Provider>
-                    <Notes name={name.current}/>
             </>
         )
     }

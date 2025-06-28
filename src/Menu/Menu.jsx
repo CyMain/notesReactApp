@@ -4,11 +4,10 @@ import pfp from '../assets/mypfp2.jpg';
 import './menu.css'
 
 function Menu(){
-
-    const name= useContext(nameContext);
+    const {name, editView, notesView, headerRef} = useContext(nameContext);
 
     return(
-        <header>
+        <header ref = {headerRef}>
             <div className="header-top">
                 <div className="profile">
                     <figure className="pfp">

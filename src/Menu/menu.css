@@ -1,6 +1,7 @@
 header{
     position: relative;
     z-index: 100;
+    display: flex;
 }
 
 .header-top{
@@ -183,7 +184,6 @@ header{
 @media (max-width:400px) {
     header{
         position: relative;
-        display: none;
     }
 
     .pfp{
