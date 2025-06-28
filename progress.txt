@@ -1,0 +1,6 @@
+Tasks:
+    create editting functionality
+
+Done:
+    create date functionality
+    create favourite functionality

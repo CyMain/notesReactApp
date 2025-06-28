@@ -54,7 +54,7 @@ header{
 
 .options-mobile{
     position: relative;
-    height: 3.5rem;
+    height: 3rem;
     justify-content: space-between;
     
     .options-mobile-left, .options-mobile-right{

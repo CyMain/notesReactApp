@@ -3,18 +3,29 @@ import { nameContext } from "../MainComponent/MainComponent.jsx";
 import './notes.css'
 
 function Notes(){
+    const date = new Date;
     const {name, editView, notesView, headerRef} = useContext(nameContext);
     const [notes, setNotes] = useState([
         {
+            id:1,
             title: "Progress Report",
             content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
-            date: "2 days ago",
+            yearCreated: 2024,
+            monthCreated:2,
+            dayCreated:23,
+            hourCreated:12,
+            minuteCreated:20,
             group:"",
             fav: false,
         },{
+            id:2,
             title: "Progress Report",
             content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
-            date: "2 days ago",
+            yearCreated: 2025,
+            monthCreated:5,
+            dayCreated:28,
+            hourCreated:22,
+            minuteCreated:33,
             group:"",
             fav: true,
         },
@@ -26,20 +37,6 @@ function Notes(){
             containedNotesIndexes:[],
         },
     ]);
-    // function toggleEditView(){
-    //     console.log("toggled");
-    //     console.log(editView.current.style.display, notesView.current);
-    //     if(editView.current.style.display =="flex" && (notesView.current.style.display == "none" || notesView.current.style.display == "")){
-    //         console.log("toggled edit view off");
-    //         editView.current.style.display = "none";
-    //         notesView.current.style.display = "flex";
-    //     } else if((editView.current.style.display == undefined || editView.current.style.display =="none") && notesView.style.display == "flex"){
-    //         console.log("toggled edit view on");
-    //         editView.current.style.display = "flex";
-    //         notesView.current.style.display = "none";
-    //     }
-    //     console.log(editView.current.style.display, notesView.current);
-    // }  
 
     useEffect(() => {
         if (headerRef && headerRef.current) {
@@ -50,11 +47,65 @@ function Notes(){
         }
     }, [headerRef]);
 
+    function getDateString(year, month, day, hours, mins){
+        if(date.getFullYear() == year){
+            if(date.getMonth() == month){
+                if(date.getDate() == day){
+                    if(date.getHours()== hours){
+                        if(date.getMinutes()==mins){
+                            return `just now`;
+                        }else{
+                            return `${date.getMinutes() - mins} minute(s) ago`;
+                        }
+                    }else{
+                        return `${date.getHours() - hours}hour(s) ago`;
+                    }
+                }else{
+                    return `${date.getDate()- day} day(s) ago`
+                }
+            }else{
+                return `${date.getMonth() - month} month(s) ago`
+            }
+        }else{
+            return `${date.getFullYear() - year} year(s) ago`
+        }
+    }
+
+    useEffect(()=>{
+        window.addEventListener("resize", toggleHeader);
+        const date = new Date;
+        console.log(date.getDate());
+        console.log(date.getHours());
+        console.log(date.getFullYear());
+
+        return ()=>{
+            window.removeEventListener("resize", toggleHeader);
+        }
+    }, []);
+
     function filterAll(){
         setCurrNotes(c => [...notes]);
     }
     function filterFavs(){
         setCurrNotes(c => notes.filter((note)=> note.fav ==true));
+    }
+
+    function favouriteNote(id) {
+        setNotes(prevNotes => {
+            const newNotes = prevNotes.map(note =>
+                note.id === id ? { ...note, fav: !note.fav } : note
+            );
+            // If currNotes is filtered, re-apply the filter after updating notes
+            setCurrNotes(curr => {
+                // If showing all notes
+                if (curr.length === prevNotes.length) {
+                    return newNotes;
+                }
+                // If showing only favourites
+                return newNotes.filter(note => note.fav);
+            });
+            return newNotes;
+        });
     }
 
     function toggleHeader(){
@@ -67,12 +118,7 @@ function Notes(){
         }
     }
 
-    useEffect(()=>{
-        window.addEventListener("resize", toggleHeader);
-        return ()=>{
-            window.removeEventListener("resize", toggleHeader);
-        }
-    }, []);
+    
 
     function toggleEditView() {
     if (!editView.current || !notesView.current || !headerRef.current) return;
@@ -97,6 +143,7 @@ function Notes(){
     }
     }
 
+
     return(
         <>
             <div className="notes-view" ref={notesView}>
@@ -115,18 +162,18 @@ function Notes(){
                     </div>
                 </nav>
                 <div className="notes-grid">
-                    {currNotes.map((note, i)=>
-                        <div className="note" key={i} onClick={toggleEditView}>
+                    {currNotes.map((note)=>
+                        <div className="note" key={note.id} >
                             <h1>{note.title}</h1>
                             <p>{note.content}</p>
-                            <span>{note.date}</span>
+                            <span>{getDateString(note.yearCreated, note.monthCreated, note.dayCreated, note.hourCreated, note.minuteCreated)}</span>
                             <div className="note-bottom">
                                 <span>{note.group ? note.group : "No Group" }</span>
                                 <div className="note-buttons">
                                     <figure>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path><path d="M9 10h2v8H9zm4 0h2v8h-2z"></path></svg>
                                     </figure>
-                                    <figure className="fav-icon">
+                                    <figure className="fav-icon" onClick={e => { e.stopPropagation(); favouriteNote(note.id); }}>
                                         {note.fav? 
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>
                                         :
