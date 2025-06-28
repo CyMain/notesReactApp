@@ -183,6 +183,7 @@ header{
 @media (max-width:400px) {
     header{
         position: relative;
+        display: none;
     }
 
     .pfp{
@@ -215,6 +216,7 @@ header{
         position: fixed;
         top: 0;
         height: 20dvh;
+        max-height: 6rem;
         gap: 0.5rem;
     }
     .header-bottom{
