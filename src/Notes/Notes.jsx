@@ -3,6 +3,7 @@ import { nameContext } from "../MainComponent/MainComponent.jsx";
 import './notes.css'
 
 function Notes(){
+    const [isEditView, setIsEditView] = useState(true);
     const date = new Date;
     const {name, editView, notesView, headerRef} = useContext(nameContext);
     const [notes, setNotes] = useState([
@@ -73,10 +74,6 @@ function Notes(){
 
     useEffect(()=>{
         window.addEventListener("resize", toggleHeader);
-        const date = new Date;
-        console.log(date.getDate());
-        console.log(date.getHours());
-        console.log(date.getFullYear());
 
         return ()=>{
             window.removeEventListener("resize", toggleHeader);
@@ -120,33 +117,36 @@ function Notes(){
 
     
 
-    function toggleEditView() {
-    if (!editView.current || !notesView.current || !headerRef.current) return;
+    function toggleEditView(title = "", content = "") {
+        const titleInput = document.querySelector('#title-input');
+        const contentInput = document.querySelector('#content-txtarea');
+        if (!editView.current || !notesView.current || !headerRef.current) return;
 
-    const editDisplay = editView.current.style.display;
-    const notesDisplay = notesView.current.style.display;
-    const headerDisplay = headerRef.current.style.display;
-
-    if (
-        editDisplay === "flex" &&
-        (notesDisplay === "none" || notesDisplay === "")
-    ) {
-        // Hide edit, show notes
-        editView.current.style.display = "none";
-        notesView.current.style.display = "flex";
-        headerRef.current.style.display = "flex";
-    } else {
-        // Show edit, hide notes
-        editView.current.style.display = "flex";
-        notesView.current.style.display = "none";
-        toggleHeader();
-    }
+        if (isEditView) {
+            // Hide edit, show notes
+            setIsEditView(false);
+            if (headerRef.current){
+                headerRef.current.style.display = "flex";
+            }
+        } else {
+            // Show edit, hide notes
+            setIsEditView(true);
+            titleInput.value = title;
+            contentInput.value = content;
+            if (headerRef.current && window.innerWidth <=400.5){
+                headerRef.current.style.display = "none";
+            }
+        }
     }
 
 
     return(
         <>
-            <div className="notes-view" ref={notesView}>
+            <div
+                className="notes-view"
+                ref={notesView}
+                style={{ display: isEditView ? "none" : "flex" }}
+            >
                 <nav className="sections">
                     <div className="left-nav">
                         <span className="nav-option" onClick={filterAll}>Notes</span>
@@ -163,7 +163,7 @@ function Notes(){
                 </nav>
                 <div className="notes-grid">
                     {currNotes.map((note)=>
-                        <div className="note" key={note.id} >
+                        <div className="note" key={note.id} onClick={()=>toggleEditView(note.title, note.content)}>
                             <h1>{note.title}</h1>
                             <p>{note.content}</p>
                             <span>{getDateString(note.yearCreated, note.monthCreated, note.dayCreated, note.hourCreated, note.minuteCreated)}</span>
@@ -187,12 +187,16 @@ function Notes(){
                     )}
                 </div>
             </div>
-            <div className="edit-note-view" ref={editView}>
-                <button className="close-edit-view-btn" onClick={toggleEditView}>
+            <div
+                className="edit-note-view"
+                ref={editView}
+                style={{ display: isEditView ? "flex" : "none" }}
+            >
+                <button className="close-edit-view-btn" onClick={()=>toggleEditView("", "")}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"></path></svg>
                 </button>
-                <input type="text" placeholder="Enter a title..."/>
-                <textarea name="" id="" placeholder="Your Note..."></textarea>
+                <input type="text" id="title-input" placeholder="Enter a title..."/>
+                <textarea name="" id="content-txtarea" placeholder="Your Note..."></textarea>
                 <button className="finish-edit-view-btn">Done</button>
             </div>
         </>

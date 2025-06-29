@@ -1,6 +1,8 @@
 Tasks:
     create editting functionality
+    
 
 Done:
+    fix the editing and notes-grid view. make it the rest of the screen width;
     create date functionality
     create favourite functionality
