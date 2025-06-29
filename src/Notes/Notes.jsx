@@ -5,34 +5,41 @@ import './notes.css'
 function Notes(){
     const [currFilter, setCurrFilter] = useState("All");
     const [isEditView, setIsEditView] = useState(false);
+    const [editingNoteId, setEditingNoteId] = useState(null);
+    const [editTitle, setEditTitle] = useState("");
+    const [editContent, setEditContent] = useState("");
     const date = new Date;
     const {name, editView, notesView, headerRef} = useContext(nameContext);
-    const [notes, setNotes] = useState([
-        {
-            id:1,
-            title: "Progress Report",
-            content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
-            yearCreated: 2024,
-            monthCreated:2,
-            dayCreated:23,
-            hourCreated:12,
-            minuteCreated:20,
-            group:"",
-            fav: false,
-        },{
-            id:2,
-            title: "Progress Report",
-            content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
-            yearCreated: 2025,
-            monthCreated:5,
-            dayCreated:28,
-            hourCreated:22,
-            minuteCreated:33,
-            group:"",
-            fav: true,
-        },
-    ]);
-    const [currNotes, setCurrNotes] = useState([...notes]);
+    const [notes, setNotes] = useState(() => {
+        const stored = localStorage.getItem("storedNotes");
+        return stored ? JSON.parse(stored) : [
+            {
+                id:1,
+                title: "Progress Report",
+                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
+                yearCreated: 2024,
+                monthCreated:2,
+                dayCreated:23,
+                hourCreated:12,
+                minuteCreated:20,
+                group:"",
+                fav: false,
+            },
+            {
+                id:2,
+                title: "Progress Report",
+                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
+                yearCreated: 2025,
+                monthCreated:5,
+                dayCreated:28,
+                hourCreated:22,
+                minuteCreated:33,
+                group:"",
+                fav: true,
+            },
+        ];
+    });
+    const [currNotes, setCurrNotes] = useState([]);
     const [groups, setGroups]= useState([
         {
             name:'Development',
@@ -40,6 +47,10 @@ function Notes(){
         },
     ]);
 
+    useEffect(()=>{
+        localStorage.setItem("storedNotes", JSON.stringify(notes))
+        setCurrNotes([...notes]);
+    }, [notes]);
     useEffect(() => {
         if (headerRef && headerRef.current) {
             document.querySelector("#root").style.setProperty(
@@ -111,7 +122,9 @@ function Notes(){
             if(window.innerWidth>400){
                 headerRef.current.style.display = "flex";
             }else{
-                headerRef.current.style.display = "none";
+                if(isEditView == true){
+                    headerRef.current.style.display = "none";
+                }
             }
         }
     }
@@ -119,10 +132,7 @@ function Notes(){
     
 
     function toggleEditView(title = "", content = "") {
-        const titleInput = document.querySelector('#title-input');
-        const contentInput = document.querySelector('#content-txtarea');
         if (!editView.current || !notesView.current || !headerRef.current) return;
-
         if (isEditView) {
             // Hide edit, show notes
             setIsEditView(false);
@@ -134,8 +144,6 @@ function Notes(){
             // Show edit, hide notes
             setIsEditView(true);
             console.log("opening-edit-view");
-            titleInput.value = title;
-            contentInput.value = content;
             if (headerRef.current && window.innerWidth <=400.5){
                 headerRef.current.style.display = "none";
             }
@@ -143,32 +151,36 @@ function Notes(){
     }
 
     function editNote(title, content, id) {
-        toggleEditView(title, content);
-        const doneButton = document.querySelector(".finish-edit-view-btn");
-        const titleInput = document.querySelector('#title-input');
-        const contentInput = document.querySelector('#content-txtarea');
-        doneButton.onclick = () => {
-            setNotes(n => {
-                const newNotes = n.map(note =>
-                    (note.id === id) ? { ...note, title: titleInput.value, content: contentInput.value } : note
-                );
-                setCurrNotes(curr => filterNotes(newNotes, currFilter));
-                return newNotes;
-            });
-            // Clear inputs (optional)
-            titleInput.value = "";
-            contentInput.value = "";
-            // Close edit view and show notes view
-            setIsEditView(false);
-            if (headerRef.current) headerRef.current.style.display = "flex";
+        setEditTitle(title);
+        setEditContent(content);
+        setEditingNoteId(id);
+        setIsEditView(true);
+        if (headerRef.current && window.innerWidth <= 400.5) {
+            headerRef.current.style.display = "none";
         }
+    }
+    function handleDoneEdit() {
+        setNotes(n => {
+            const newNotes = n.map(note =>
+                note.id === editingNoteId
+                    ? { ...note, title: editTitle, content: editContent }
+                    : note
+            );
+            setCurrNotes(curr => filterNotes(newNotes, currFilter));
+            return newNotes;
+        });
+        setIsEditView(false);
+        setEditingNoteId(null);
+        setEditTitle("");
+        setEditContent("");
+        if (headerRef.current) headerRef.current.style.display = "flex";
     }
 
     function filterNotes(notesList, filterword){
         if(filterword =="favourites"){
             return notesList.filter(note => note.fav);
         } else if(filterword == "All"){
-            return notes;
+            return notesList;
         } else{
             return notesList.filter(note=> note.group === filterword);
         }
@@ -192,7 +204,7 @@ function Notes(){
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m6 20 4-4H7V4H5v12H2zm5-12h9v2h-9zm0 4h7v2h-7zm0-8h11v2H11zm0 12h5v2h-5z"></path></svg>
                         </figure>
                         <figure className="nav-option">
-                            <div>Another ICON</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 16c1.671 0 3-1.331 3-3s-1.329-3-3-3-3 1.331-3 3 1.329 3 3 3z"></path><path d="M20.817 11.186a8.94 8.94 0 0 0-1.355-3.219 9.053 9.053 0 0 0-2.43-2.43 8.95 8.95 0 0 0-3.219-1.355 9.028 9.028 0 0 0-1.838-.18V2L8 5l3.975 3V6.002c.484-.002.968.044 1.435.14a6.961 6.961 0 0 1 2.502 1.053 7.005 7.005 0 0 1 1.892 1.892A6.967 6.967 0 0 1 19 13a7.032 7.032 0 0 1-.55 2.725 7.11 7.11 0 0 1-.644 1.188 7.2 7.2 0 0 1-.858 1.039 7.028 7.028 0 0 1-3.536 1.907 7.13 7.13 0 0 1-2.822 0 6.961 6.961 0 0 1-2.503-1.054 7.002 7.002 0 0 1-1.89-1.89A6.996 6.996 0 0 1 5 13H3a9.02 9.02 0 0 0 1.539 5.034 9.096 9.096 0 0 0 2.428 2.428A8.95 8.95 0 0 0 12 22a9.09 9.09 0 0 0 1.814-.183 9.014 9.014 0 0 0 3.218-1.355 8.886 8.886 0 0 0 1.331-1.099 9.228 9.228 0 0 0 1.1-1.332A8.952 8.952 0 0 0 21 13a9.09 9.09 0 0 0-.183-1.814z"></path></svg>
                         </figure>
                     </div>
                 </nav>
@@ -221,6 +233,9 @@ function Notes(){
                         </div>
                     )}
                 </div>
+                <button className="add-note-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
+                </button>
             </div>
             <div
                 className="edit-note-view"
@@ -230,9 +245,20 @@ function Notes(){
                 <button className="close-edit-view-btn" onClick={()=>toggleEditView("", "")}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"></path></svg>
                 </button>
-                <input type="text" id="title-input" placeholder="Enter a title..."/>
-                <textarea name="" id="content-txtarea" placeholder="Your Note..."></textarea>
-                <button className="finish-edit-view-btn">Done</button>
+                <input 
+                    type="text"
+                    id="title-input"
+                    placeholder="Enter a title..."
+                    value={editTitle}
+                    onChange={e => setEditTitle(e.target.value)}
+                    />
+                <textarea
+                    id="content-txtarea"
+                    placeholder="Your Note..."
+                    value={editContent}
+                    onChange={e => setEditContent(e.target.value)}
+                ></textarea>
+                <button className="finish-edit-view-btn" onClick={handleDoneEdit}>Done</button>
             </div>
         </>
     )

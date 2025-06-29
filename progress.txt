@@ -1,8 +1,13 @@
 Tasks:
-    create editting functionality
+    create "create-note" functionality
+
+Errors:
+    when switching from large screen to small screen, the header turns to display none even tho
+        edit view is closed. This is because of a useEffect rect hook active on window resize.
     
 
 Done:
+    create editting functionality
     fix the editing and notes-grid view. make it the rest of the screen width;
     create date functionality
     create favourite functionality
