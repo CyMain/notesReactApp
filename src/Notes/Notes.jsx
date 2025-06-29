@@ -3,7 +3,8 @@ import { nameContext } from "../MainComponent/MainComponent.jsx";
 import './notes.css'
 
 function Notes(){
-    const [isEditView, setIsEditView] = useState(true);
+    const [currFilter, setCurrFilter] = useState("All");
+    const [isEditView, setIsEditView] = useState(false);
     const date = new Date;
     const {name, editView, notesView, headerRef} = useContext(nameContext);
     const [notes, setNotes] = useState([
@@ -125,17 +126,51 @@ function Notes(){
         if (isEditView) {
             // Hide edit, show notes
             setIsEditView(false);
+            console.log("closing-edit-view");
             if (headerRef.current){
                 headerRef.current.style.display = "flex";
             }
         } else {
             // Show edit, hide notes
             setIsEditView(true);
+            console.log("opening-edit-view");
             titleInput.value = title;
             contentInput.value = content;
             if (headerRef.current && window.innerWidth <=400.5){
                 headerRef.current.style.display = "none";
             }
+        }
+    }
+
+    function editNote(title, content, id) {
+        toggleEditView(title, content);
+        const doneButton = document.querySelector(".finish-edit-view-btn");
+        const titleInput = document.querySelector('#title-input');
+        const contentInput = document.querySelector('#content-txtarea');
+        doneButton.onclick = () => {
+            setNotes(n => {
+                const newNotes = n.map(note =>
+                    (note.id === id) ? { ...note, title: titleInput.value, content: contentInput.value } : note
+                );
+                setCurrNotes(curr => filterNotes(newNotes, currFilter));
+                return newNotes;
+            });
+            // Clear inputs (optional)
+            titleInput.value = "";
+            contentInput.value = "";
+            // Close edit view and show notes view
+            setIsEditView(false);
+            if (headerRef.current) headerRef.current.style.display = "flex";
+        }
+    }
+
+    function filterNotes(notesList, filterword){
+        if(filterword =="favourites"){
+            return notesList.filter(note => note.fav);
+        } else if(filterword == "All"){
+            return notes;
+        } else{
+            return notesList.filter(note=> note.group === filterword);
         }
     }
 
@@ -163,7 +198,7 @@ function Notes(){
                 </nav>
                 <div className="notes-grid">
                     {currNotes.map((note)=>
-                        <div className="note" key={note.id} onClick={()=>toggleEditView(note.title, note.content)}>
+                        <div className="note" key={note.id} onClick={()=>editNote(note.title, note.content, note.id)}>
                             <h1>{note.title}</h1>
                             <p>{note.content}</p>
                             <span>{getDateString(note.yearCreated, note.monthCreated, note.dayCreated, note.hourCreated, note.minuteCreated)}</span>
