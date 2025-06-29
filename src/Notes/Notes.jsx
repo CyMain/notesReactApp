@@ -145,15 +145,27 @@ function Notes() {
     }
 
 
-    function decideNoteSize(text) {
-        if (text.length >= 100){
-            return "note-lg note";
-        }
-        else if(text.length>= 50){
-            return "note-medium note";
+    function decideNoteSize(title,text) {
+        if(title.length>= 10){
+            if (text.length >= 250){
+                return "note-lg note";
+            }
+            else if(text.length>= 100){
+                return "note-medium note";
+            } else{
+                return "note-small note";
+            }    
         } else{
-            return "note-small note";
+            if (text.length >= 150){
+                return "note-lg note";
+            }
+            else if(text.length>= 90){
+                return "note-medium note";
+            } else{
+                return "note-small note";
+            }
         }
+        
     }
 
     return (
@@ -179,7 +191,7 @@ function Notes() {
                 </nav>
                 <div className="notes-grid">
                     {currNotes.map((note) =>
-                        <div className={decideNoteSize(note.content)} key={note.id} onClick={() => editNote(note.title, note.content, note.id)}>
+                        <div className={decideNoteSize(note.title,note.content)} key={note.id} onClick={() => editNote(note.title, note.content, note.id)}>
                             <h1>{note.title}</h1>
                             <p>{note.content}</p>
                             <span>{getDateString(note.yearCreated, note.monthCreated, note.dayCreated, note.hourCreated, note.minuteCreated)}</span>

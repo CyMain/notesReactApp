@@ -2,8 +2,8 @@
     --note-width:10rem;
     --row-increment: 1.4rem;
     --note-small: 6;
-    --note-medium:8;
-    --note-large:11;
+    --note-medium: 8;
+    --note-large:10;
     --note_border_radius: 0.8rem
 }
 
@@ -136,6 +136,7 @@
     padding:0;
     display:grid;
     grid-template-columns:repeat(auto-fill, var(--note-width));
+    grid-auto-flow:row;
     grid-auto-rows: var(--row-increment);
     justify-content: start;
 }
@@ -153,7 +154,7 @@
 
 .note{
     background: rgb(var(--accent3));
-    margin:1rem;
+    margin:0.5rem;
     padding:0;
     border-radius:var(--note_border_radius);
     width: var(--note-width);
