@@ -1,5 +1,4 @@
 Tasks:
-    create "create-note" functionality
 
 Errors:
     when switching from large screen to small screen, the header turns to display none even tho
@@ -7,6 +6,7 @@ Errors:
     
 
 Done:
+    create "create-note" functionality
     create editting functionality
     fix the editing and notes-grid view. make it the rest of the screen width;
     create date functionality

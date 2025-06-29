@@ -3,49 +3,7 @@ import { nameContext } from "../MainComponent/MainComponent.jsx";
 import './notes.css'
 
 function Notes(){
-    const [currFilter, setCurrFilter] = useState("All");
-    const [isEditView, setIsEditView] = useState(false);
-    const [editingNoteId, setEditingNoteId] = useState(null);
-    const [editTitle, setEditTitle] = useState("");
-    const [editContent, setEditContent] = useState("");
-    const date = new Date;
-    const {name, editView, notesView, headerRef} = useContext(nameContext);
-    const [notes, setNotes] = useState(() => {
-        const stored = localStorage.getItem("storedNotes");
-        return stored ? JSON.parse(stored) : [
-            {
-                id:1,
-                title: "Progress Report",
-                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
-                yearCreated: 2024,
-                monthCreated:2,
-                dayCreated:23,
-                hourCreated:12,
-                minuteCreated:20,
-                group:"",
-                fav: false,
-            },
-            {
-                id:2,
-                title: "Progress Report",
-                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
-                yearCreated: 2025,
-                monthCreated:5,
-                dayCreated:28,
-                hourCreated:22,
-                minuteCreated:33,
-                group:"",
-                fav: true,
-            },
-        ];
-    });
-    const [currNotes, setCurrNotes] = useState([]);
-    const [groups, setGroups]= useState([
-        {
-            name:'Development',
-            containedNotesIndexes:[],
-        },
-    ]);
+    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit} = useContext(nameContext);
 
     useEffect(()=>{
         localStorage.setItem("storedNotes", JSON.stringify(notes))
@@ -233,7 +191,7 @@ function Notes(){
                         </div>
                     )}
                 </div>
-                <button className="add-note-lg">
+                <button className="add-note-lg" onClick={createNoteAndEdit}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 11h-6V5h-2v6H5v2h6v6h2v-6h6z"></path></svg>
                 </button>
             </div>

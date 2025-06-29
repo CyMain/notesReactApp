@@ -1,3 +1,21 @@
+:root{
+    --note-width:6rem;
+    --card_border_radius:1rem;
+    --row-increment: 1rem;
+    --note-small: 26;
+    --note-medium:33;
+    --note-large:45;
+}
+
+/*
+.notes-grid{
+margin:0;
+padding:0;
+display:grid;
+grid-template-column:repeat(auto-fill, var(--note-width))
+}
+*/
+
 .edit-note-view{
     height: 100dvh;
     flex-direction: column;
@@ -94,6 +112,7 @@
     display: grid;
     gap: 1rem;
     width: 100%;
+    align-items: start;
     overflow-y:auto;
     overflow-x: hidden;
     scroll-behavior:smooth;
@@ -103,7 +122,6 @@
 .note{
     background: rgb(var(--accent3));
     border-radius: 1rem;
-    height: max-content;
     padding: 0.8rem;
     display: flex;
     flex-direction: column;

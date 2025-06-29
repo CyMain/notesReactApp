@@ -13,8 +13,73 @@ function MainComponent(){
     const editView = useRef(null);
     const notesView = useRef(null);
     const headerRef = useRef(null);
+    const [currNotes, setCurrNotes] = useState([]);
 
+    const [currFilter, setCurrFilter] = useState("All");
+    const [isEditView, setIsEditView] = useState(false);
+    const [editingNoteId, setEditingNoteId] = useState(null);
+    const [editTitle, setEditTitle] = useState("");
+    const [editContent, setEditContent] = useState("");
+    const date = new Date;
+    const [notes, setNotes] = useState(() => {
+        const stored = localStorage.getItem("storedNotes");
+        return stored ? JSON.parse(stored) : [
+            {
+                id:1,
+                title: "Progress Report",
+                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
+                yearCreated: 2024,
+                monthCreated:2,
+                dayCreated:23,
+                hourCreated:12,
+                minuteCreated:20,
+                group:"",
+                fav: false,
+            },
+            {
+                id:2,
+                title: "Progress Report",
+                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
+                yearCreated: 2025,
+                monthCreated:5,
+                dayCreated:28,
+                hourCreated:22,
+                minuteCreated:33,
+                group:"",
+                fav: true,
+            },
+        ];
+    });
+    const [groups, setGroups]= useState([
+        {
+            name:'Development',
+            containedNotesIndexes:[],
+        },
+    ]);
 
+    function createNoteAndEdit() {
+        const date = new Date();
+        const newNote = {
+            id: Date.now(),
+            title: "",
+            content: "",
+            yearCreated: date.getFullYear(),
+            monthCreated: date.getMonth(),
+            dayCreated: date.getDate(),
+            hourCreated: date.getHours(),
+            minuteCreated: date.getMinutes(),
+            group: "",
+            fav: false,
+        };
+        setNotes(prevNotes => [newNote, ...prevNotes]);
+        setEditTitle("");
+        setEditContent("");
+        setEditingNoteId(newNote.id);
+        setIsEditView(true);
+        if (headerRef.current && window.innerWidth <= 400.5) {
+            headerRef.current.style.display = "none";
+        }
+    }
 
     function handleNameEntry(){
         const nameEntryInp = document.querySelector('.name-entry-inp');
@@ -53,7 +118,7 @@ function MainComponent(){
         console.log(name.current)
         return(
             <>
-                <nameContext.Provider value = {{name: name.current, editView, notesView, headerRef}}>
+                <nameContext.Provider value = {{name: name.current, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit}}>
                     <Menu/>
                     <Notes/>
                 </nameContext.Provider>
