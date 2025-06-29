@@ -163,7 +163,7 @@ function Notes(){
         setNotes(n => {
             const newNotes = n.map(note =>
                 note.id === editingNoteId
-                    ? { ...note, title: editTitle, content: editContent }
+                    ? { ...note, title: editTitle, content: editContent , yearCreated : date.getFullYear(), monthCreated: date.getMonth(), dayCreated: date.getDate(), hourCreated: date.getHours(), minuteCreated: date.getMinutes()}
                     : note
             );
             setCurrNotes(curr => filterNotes(newNotes, currFilter));
