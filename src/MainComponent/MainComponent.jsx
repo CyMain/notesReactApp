@@ -35,6 +35,7 @@ function MainComponent(){
                 minuteCreated:20,
                 group:"",
                 fav: false,
+                trashed:false,
             },
             {
                 id:2,
@@ -47,15 +48,36 @@ function MainComponent(){
                 minuteCreated:33,
                 group:"",
                 fav: true,
+                trashed:true,
             },
         ];
     });
-    const [groups, setGroups]= useState([
-        {
-            name:'Development',
-            containedNotesIndexes:[],
-        },
-    ]);
+    const [groups, setGroups]= useState(() => {
+        const stored = localStorage.getItem("storedGroups");
+        return stored ? JSON.parse(stored) : [
+            {
+                name:"Sonic Heroes",
+            },{
+                name:"Shadow Heroes",
+            }
+        ]
+    });
+
+    
+    function filterGroup(group){
+        setCurrNotes(c=> filterNotes(c, group));
+    }
+    function filterNotes(notesList, filterword) {
+        if (filterword === "Trash") {
+            return notesList.filter(note => note.trashed);
+        } else if (filterword === "favourites") {
+            return notesList.filter(note => note.fav && !note.trashed);
+        } else if (filterword === "All") {
+            return notesList.filter(note => !note.trashed);
+        } else {
+            return notesList.filter(note => note.group === filterword && !note.trashed);
+        }
+    }
 
     function createNoteAndEdit() {
         const date = new Date();
@@ -118,7 +140,7 @@ function MainComponent(){
         console.log(name.current)
         return(
             <>
-                <nameContext.Provider value = {{name: name.current, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit}}>
+                <nameContext.Provider value = {{name: name.current, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes}}>
                     <Menu/>
                     <Notes/>
                 </nameContext.Provider>

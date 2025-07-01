@@ -1,6 +1,10 @@
 Tasks:
+    make trash button on menu open trashed items only 
+    add trash functionality
+    make new note id bro.
 
 Errors:
+     name changes to null randomly
     when switching from large screen to small screen, the header turns to display none even tho
         edit view is closed. This is because of a useEffect rect hook active on window resize.
     

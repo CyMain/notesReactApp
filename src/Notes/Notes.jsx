@@ -3,12 +3,14 @@ import { nameContext } from "../MainComponent/MainComponent.jsx";
 import './notes.css'
 
 function Notes() {
-    const { name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit } = useContext(nameContext);
+    const { name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes} = useContext(nameContext);
 
     useEffect(() => {
         localStorage.setItem("storedNotes", JSON.stringify(notes))
-        setCurrNotes([...notes]);
     }, [notes]);
+    useEffect(() => {
+        setCurrNotes(filterNotes(notes, currFilter));
+    }, [notes, currFilter]);
     useEffect(() => {
         if (headerRef && headerRef.current) {
             document.querySelector("#root").style.setProperty(
@@ -51,11 +53,12 @@ function Notes() {
     }, []);
 
     function filterAll() {
-        setCurrNotes(c => [...notes]);
+        setCurrNotes(c => filterNotes(c, "All"));
     }
     function filterFavs() {
-        setCurrNotes(c => notes.filter((note) => note.fav == true));
+        setCurrNotes(c => filterNotes(c, "favourites"));
     }
+
 
     function favouriteNote(id) {
         setNotes(prevNotes => {
@@ -87,6 +90,46 @@ function Notes() {
         }
     }
 
+    function trashNote(id) {
+        setNotes(prevNotes => {
+            const newNotes = prevNotes.map(note =>
+                note.id === id
+                    ? { ...note, trashed: !note.trashed } // toggle trashed
+                    : note
+            );
+            // If currently viewing trash, update currNotes to only trashed notes
+            if (currFilter === "Trash") {
+                setCurrNotes(newNotes.filter(note => note.trashed));
+            } else {
+                setCurrNotes(filterNotes(newNotes, currFilter));
+            }
+            return newNotes;
+        });
+    }
+
+    function deleteNotePermanently(id) {
+        setNotes(prevNotes => {
+            const newNotes = prevNotes.filter(note => note.id !== id);
+            if (currFilter === "Trash") {
+                setCurrNotes(newNotes.filter(note => note.trashed));
+            } else {
+                setCurrNotes(filterNotes(newNotes, currFilter));
+            }
+            return newNotes;
+        });
+    }
+
+    function restoreNote(id) {
+        setNotes(prevNotes => {
+            const newNotes = prevNotes.map(note =>
+                note.id === id
+                    ? { ...note, trashed: false }
+                    : note
+            );
+            setCurrNotes(newNotes.filter(note => note.trashed));
+            return newNotes;
+        });
+    }
 
 
     function toggleEditView(title = "", content = "") {
@@ -132,16 +175,6 @@ function Notes() {
         setEditTitle("");
         setEditContent("");
         if (headerRef.current) headerRef.current.style.display = "flex";
-    }
-
-    function filterNotes(notesList, filterword) {
-        if (filterword == "favourites") {
-            return notesList.filter(note => note.fav);
-        } else if (filterword == "All") {
-            return notesList;
-        } else {
-            return notesList.filter(note => note.group === filterword);
-        }
     }
 
 
@@ -191,16 +224,28 @@ function Notes() {
                 </nav>
                 <div className="notes-grid">
                     {currNotes.map((note) =>
-                        <div className={decideNoteSize(note.title,note.content)} key={note.id} onClick={() => editNote(note.title, note.content, note.id)}>
+                        <div
+                            className={decideNoteSize(note.title,note.content) +
+                                (currFilter === "All" && note.trashed ? " trashed-note" : "")}
+                            key={note.id}
+                            onClick={() => editNote(note.title, note.content, note.id)}
+                        >
                             <h1>{note.title}</h1>
                             <p>{note.content}</p>
                             <span>{getDateString(note.yearCreated, note.monthCreated, note.dayCreated, note.hourCreated, note.minuteCreated)}</span>
                             <div className="note-bottom">
                                 <span>{note.group ? note.group : "No Group"}</span>
                                 <div className="note-buttons">
-                                    <figure>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path><path d="M9 10h2v8H9zm4 0h2v8h-2z"></path></svg>
-                                    </figure>
+                                    {currFilter === "Trash" ? (
+                                        <>
+                                            <button className="restore-note-btn btn" onClick={e => {e.stopPropagation();restoreNote(note.id);}}>Restore</button>
+                                            <button className="delete-note-btn btn" onClick={ e => {e.stopPropagation();deleteNotePermanently(note.id);}}>Delete Forever</button>
+                                        </>
+                                    ) : (
+                                        <button className="trash-note-btn btn" onClick={e => {e.stopPropagation();trashNote(note.id);}}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path><path d="M9 10h2v8H9zm4 0h2v8h-2z"></path></svg>
+                                        </button>
+                                    )}
                                     <figure className="fav-icon" onClick={e => { e.stopPropagation(); favouriteNote(note.id); }}>
                                         {note.fav ?
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>

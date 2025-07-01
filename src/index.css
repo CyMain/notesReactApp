@@ -24,6 +24,17 @@ button{
     color: rgb(var(--text-color1));
 }
 
+.btn{
+    width: 1.5rem;
+    height: 1.5rem;
+    background: transparent;
+    svg{
+        fill: rgb(var(--accent2));
+        width: 100%;
+        height: 100%;
+    }
+}
+
 figure{
     svg{
         width: 100%;

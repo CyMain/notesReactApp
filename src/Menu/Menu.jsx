@@ -4,7 +4,7 @@ import pfp from '../assets/mypfp2.jpg';
 import './menu.css'
 
 function Menu(){
-    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit} = useContext(nameContext);
+    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes} = useContext(nameContext);
 
     return(
         <header ref = {headerRef}>
@@ -92,9 +92,10 @@ function Menu(){
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path></svg>
                                 </figure>
                             </span>
-                            <ul>
-                                <li>Group1</li>
-                                <li>Group2</li>
+                            <ul className="groups-list">
+                                {groups.map((group, i)=>
+                                    <li key={i} className="group" onClick={filterGroup(group)}>{group.name}</li>
+                                )}
                             </ul>
                         </nav>
                         <nav className="lg-menu-bottom-bottom">
