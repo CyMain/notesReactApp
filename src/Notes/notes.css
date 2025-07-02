@@ -184,6 +184,9 @@
     }
     >*{
         font-size: 0.7rem;
+        width: 100%;
+        overflow: hidden;
+        word-break: break-all;
     }
     >.note-bottom{
         display: flex;
