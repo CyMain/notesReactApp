@@ -104,10 +104,33 @@ function MainComponent(){
         setEditContent("");
         setEditingNoteId(newNote.id);
         setIsEditView(true);
-        if (headerRef.current && window.innerWidth <= 400.5) {
+        if (headerRef.current && window.innerWidth <= 700.5) {
             headerRef.current.style.display = "none";
         }
     }
+
+    useEffect(()=>{
+        if(isEditView==true){
+            window.addEventListener("resize", ()=>{
+                if(window.innerWidth>700.5){
+                    headerRef.current.style.display = "flex";
+                }else{
+                    headerRef.current.style.display = "none";
+                }
+            })
+        }
+        
+
+        return()=>{
+            window.removeEventListener("resize", ()=>{
+                if(window.innerWidth>700.5){
+                    headerRef.current.style.display = "flex";
+                }else{
+                    headerRef.current.style.display = "none";
+                }
+            })
+        }
+    })
 
     function handleNameEntry() {
         const nameEntryInp = document.querySelector('.name-entry-inp');
@@ -158,7 +181,6 @@ function MainComponent(){
             </div>
         )
     }else{
-        console.log(name.current)
         return(
             <>
                 <nameContext.Provider value = {{name: username, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup}}>

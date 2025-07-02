@@ -1,5 +1,5 @@
 Tasks:
-    
+    if title and content are empty in edit view, backbutton should erase empty note.
     opening edit view on mobile should display none mobile header.
     make new note id bro.
 
