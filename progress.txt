@@ -1,13 +1,13 @@
 Tasks:
     if title and content are empty in edit view, backbutton should erase empty note.
-    opening edit view on mobile should display none mobile header.
-    make new note id bro.
+    make new note id bro.//nah
 
-Errors:     
-    when switching from large screen to small screen, the header turns to display none even tho
-        edit view is closed. This is because of a useEffect rect hook active on window resize.
+Errors:         
     
 Done:
+    edit view is closed. This is because of a useEffect rect hook active on window resize.
+    when switching from large screen to small screen, the header turns to display none even tho
+    opening edit view on mobile should display none mobile header.
     name changes to null randomly
     when edit view is open, make sure pressing any other section disables editview and goes to that section. Like pressing notes
     trigger sliding down and up animation for groups list
