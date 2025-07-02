@@ -5,7 +5,7 @@ import './menu.css'
 
 function Menu(){
     const [newGroupName, setNewGroupName] = useState("");
-    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes} = useContext(nameContext);
+    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup} = useContext(nameContext);
     const crossTextStyle = {
         textDecoration: "line-through",
         background:"rgb(40, 42, 83)",
@@ -129,7 +129,24 @@ function Menu(){
                             </span>
                             <ul className="groups-list">
                                 {groups.map((group, i)=>
-                                    <li key={i} className="group" onClick={(e)=>{e.preventDefault();filterGroup(group)}}>{group.name}</li>
+                                    <li
+                                        key={i}
+                                        className="group"
+                                        onClick={
+                                            (e)=>{
+                                                e.preventDefault();
+                                                filterGroup(group.name)
+                                            }}
+                                    >
+                                        <span className="group-name">{group.name}</span>
+                                        <button
+                                            className="delete-group-btn"
+                                            onClick={() => handleDeleteGroup(group.name)}
+                                            title="Delete group"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+                                        </button>
+                                    </li>
                                 )}
                             </ul>
                         </nav>

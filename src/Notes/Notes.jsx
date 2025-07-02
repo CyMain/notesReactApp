@@ -3,7 +3,7 @@ import { nameContext } from "../MainComponent/MainComponent.jsx";
 import './notes.css'
 
 function Notes() {
-    const { name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes} = useContext(nameContext);
+    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup} = useContext(nameContext);
 
     useEffect(() => {
         localStorage.setItem("storedNotes", JSON.stringify(notes))
@@ -164,7 +164,16 @@ function Notes() {
         setNotes(n => {
             const newNotes = n.map(note =>
                 note.id === editingNoteId
-                    ? { ...note, title: editTitle, content: editContent, yearCreated: date.getFullYear(), monthCreated: date.getMonth(), dayCreated: date.getDate(), hourCreated: date.getHours(), minuteCreated: date.getMinutes() }
+                    ? { ...note,
+                        title: editTitle,
+                        content: editContent,
+                        yearCreated: date.getFullYear(),
+                        monthCreated: date.getMonth(),
+                        dayCreated: date.getDate(),
+                        hourCreated: date.getHours(),
+                        minuteCreated: date.getMinutes(),
+                        group : editGroup,
+                    }
                     : note
             );
             setCurrNotes(curr => filterNotes(newNotes, currFilter));
@@ -284,18 +293,19 @@ function Notes() {
                     value={editContent}
                     onChange={e => setEditContent(e.target.value)}
                 ></textarea>
-                {/* <label>
+                <label className="group-select-container">
                     Group:
                     <select
+                        className="group-select"
                         value={editGroup}
                         onChange={e => setEditGroup(e.target.value)}
                     >
                         <option value="">No Group</option>
                         {groups.map((g, i) => (
-                            <option key={i} value={g.name}>{g.name}</option>
+                        <option key={i} value={g.name}>{g.name}</option>
                         ))}
                     </select>
-                </label> */}
+                </label>
                 <button className="finish-edit-view-btn" onClick={handleDoneEdit}>Done</button>
             </div>
         </>

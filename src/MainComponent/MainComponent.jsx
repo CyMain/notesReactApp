@@ -62,6 +62,7 @@ function MainComponent(){
             }
         ]
     });
+    const [editGroup, setEditGroup] = useState("");
 
     useEffect(()=>{
         localStorage.setItem("storedGroups", JSON.stringify(groups));
@@ -119,6 +120,16 @@ function MainComponent(){
             setHasName(false);
         }
     }
+    function handleDeleteGroup(groupName) {
+        // Remove group from groups array
+        setGroups(prevGroups => prevGroups.filter(g => g.name !== groupName));
+        // Remove group from notes
+        setNotes(prevNotes =>
+            prevNotes.map(note =>
+                note.group === groupName ? { ...note, group: "" } : note
+            )
+        );
+    }
 
     useEffect(() => {
         const storedName = localStorage.getItem('username');
@@ -150,7 +161,7 @@ function MainComponent(){
         console.log(name.current)
         return(
             <>
-                <nameContext.Provider value = {{name: username, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes}}>
+                <nameContext.Provider value = {{name: username, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup}}>
                     <Menu/>
                     <Notes/>
                 </nameContext.Provider>
