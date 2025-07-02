@@ -12,6 +12,15 @@ function Menu(){
 
     return(
         <header ref = {headerRef}>
+            <div className="menu-pop-up-container">
+                <div className="menu-pop-up">
+                    <div className="create-group-pop-up">
+                        <input type="text" className="group-name-input" placeholder="Enter group name..."/>
+                        <button className="creatge-group-button">Create Group</button>
+                    </div>
+                    
+                </div>
+            </div>
             <div className="header-top">
                 <div className="profile">
                     <figure className="pfp">
