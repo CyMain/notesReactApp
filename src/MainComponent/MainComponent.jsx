@@ -70,7 +70,7 @@ function MainComponent(){
 
     
     function filterGroup(group){
-        setCurrNotes(c=> filterNotes(c, group));
+        setCurrNotes(c=> filterNotes(notes, group));
     }
     function filterNotes(notesList, filterword) {
         if (filterword === "Trash") {
