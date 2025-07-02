@@ -2,6 +2,7 @@ Tasks:
     make trash button on menu open trashed items only 
     add trash functionality
     make new note id bro.
+    Adjust conditions for deciding notes size class(notes.jsx);
 
 Errors:
      name changes to null randomly

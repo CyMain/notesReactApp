@@ -9,7 +9,7 @@ function MainComponent(){
 
     
     const [hasName, setHasName] = useState();
-    const name = useRef(null);
+    const [username, setUsername] = useState("");
     const editView = useRef(null);
     const notesView = useRef(null);
     const headerRef = useRef(null);
@@ -63,6 +63,11 @@ function MainComponent(){
         ]
     });
 
+    useEffect(()=>{
+        localStorage.setItem("storedGroups", JSON.stringify(groups));
+
+    }, [groups]);
+
     
     function filterGroup(group){
         setCurrNotes(c=> filterNotes(c, group));
@@ -103,36 +108,41 @@ function MainComponent(){
         }
     }
 
-    function handleNameEntry(){
+    function handleNameEntry() {
         const nameEntryInp = document.querySelector('.name-entry-inp');
-        name.current = nameEntryInp.value;
-        if(name.curremt !== null && name.current !== ""){
+        const enteredName = nameEntryInp.value.trim();
+        if (enteredName !== "") {
+            setUsername(enteredName);
             setHasName(true);
-            localStorage.setItem('username', name.current);
-        } else{
+            localStorage.setItem('username', enteredName);
+        } else {
             setHasName(false);
         }
     }
 
-    useEffect(()=>{
-        if(localStorage.getItem('username')){
+    useEffect(() => {
+        const storedName = localStorage.getItem('username');
+        if (storedName && storedName.trim() !== "") {
+            setUsername(storedName);
             setHasName(true);
-            name.current = localStorage.getItem('username');
+        } else {
+            setHasName(false);
         }
-
-        return()=>{
-            
-        }
-    },[])
+    }, []);
     
 
-    if(hasName==false || hasName == null || hasName == undefined){
+    if(!hasName){
         console.log(hasName);
         console.log('name entering');
         return(
             <div className="intro-element">
                 <h2>What would you like to be called?</h2>
-                <input type="text" className="name-entry-inp" placeholder="Enter a name..." ref={name}/>
+                <input
+                    type="text"
+                    className="name-entry-inp"
+                    placeholder="Enter a name..."
+                    defaultValue={username}
+                />
                 <button className="enter-name-btn" onClick={handleNameEntry}>Enter</button>
             </div>
         )
@@ -140,7 +150,7 @@ function MainComponent(){
         console.log(name.current)
         return(
             <>
-                <nameContext.Provider value = {{name: name.current, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes}}>
+                <nameContext.Provider value = {{name: username, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes}}>
                     <Menu/>
                     <Notes/>
                 </nameContext.Provider>

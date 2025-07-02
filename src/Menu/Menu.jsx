@@ -94,7 +94,7 @@ function Menu(){
                             </span>
                             <ul className="groups-list">
                                 {groups.map((group, i)=>
-                                    <li key={i} className="group" onClick={filterGroup(group)}>{group.name}</li>
+                                    <li key={i} className="group" onClick={() => filterGroup(group)}>{group.name}</li>
                                 )}
                             </ul>
                         </nav>

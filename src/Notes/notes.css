@@ -1,7 +1,7 @@
 :root{
     --note-width:10rem;
     --row-increment: 1.4rem;
-    --note-small: 6;
+    --note-small: 3;
     --note-medium: 8;
     --note-large:10;
     --note_border_radius: 0.8rem
@@ -81,6 +81,7 @@
     flex-direction: column;
     gap: 0.6rem;
     height: 100dvh;
+    width:100%;
     .add-note-lg{
         position: absolute;
         width: 2rem;
@@ -140,12 +141,14 @@
     overflow-x: hidden;
     scroll-behavior:smooth;
     scrollbar-width: none;
-    margin:0;
-    padding:0;
     display:grid;
+    gap:1rem;
     grid-template-columns:repeat(auto-fill, var(--note-width));
     grid-auto-flow:row;
     grid-auto-rows: var(--row-increment);
+    margin:0;
+    padding:0;
+    
     justify-content: start;
 }
 
@@ -165,13 +168,14 @@
     margin:0.5rem;
     padding:0;
     border-radius:var(--note_border_radius);
-    width: var(--note-width);
+    width: 100%;
+    max-width: var(--note-width);
+    box-sizing: border-box;
     height: max-content;
     padding: 0.8rem;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    overflow: hidden;
     &:hover{
         background: rgb(var(--accent4));
     }
@@ -219,8 +223,9 @@
             display: none;
         }
     }
-    .notes-grid{
-        grid-template-columns: 1fr;
+
+    .note{
+        width: 100%;
     }
 }
 
@@ -235,6 +240,10 @@
         padding-right: 1rem;
     }
     .notes-grid{
-        grid-template-columns: repeat(auto-fill, minmax(150px, 13rem));
+        /* grid-template-columns: repeat(auto-fill, minmax(150px, 13rem)); */
+        
     }
+
+    
+
 }
