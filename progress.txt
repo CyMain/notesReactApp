@@ -1,4 +1,5 @@
 Tasks:
+    trigger sliding down and up animation for groups list
     make new note id bro.
     make the right nav of the .sections in the note view to have a 3 dot menu that drops down so you can see "sort by"
 

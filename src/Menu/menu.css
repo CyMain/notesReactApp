@@ -25,6 +25,7 @@ header{
         box-shadow: 0 0 1rem 1rem rgb(var(--accent2), 0.2);
         border-radius: 1rem;
         >.close-pop-up{
+            cursor: pointer;
             position: absolute;
             width: 1.5rem;
             height: 1.5rem;
@@ -226,13 +227,17 @@ header{
         }
     }
     .lg-menu-bottom-half{
-        flex: 1;
         display: flex;
         flex-direction: column;
+        height: 100%;
         justify-content: space-between;
-        padding-top: 0.2rem;
         .lg-menu-bottom-top{
-            .groups-tag{
+            display: flex;
+            flex-direction: column;
+            flex: 1 1 auto;
+            min-height: 0; /* allow flex children to shrink */
+            >.groups-tag{
+                flex-shrink: 0;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -259,16 +264,18 @@ header{
         
 
         .lg-menu-bottom-bottom{
+            flex-shrink: 0;
             display: flex;
             flex-direction: column;
             >ul>li{
                 height: 1.5rem;
-                display: flex;
-                align-items: center;
                 &:hover{
                     background: rgb(var(--accent4));
                 }
                 a{
+                    display: flex;
+                    align-items: center;
+                    height: 100%;
                     width: 100%;
                     display: flex;
                     align-items: center;
@@ -284,9 +291,25 @@ header{
     }
 }
 
-.groups-list{
+.groups-list-container{
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
     flex-direction: column;
+}
+
+.groups-list{
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Optional: set a max-height if you want */
+    display: flex;
+    flex-direction: column;
+    transform: translateY(0%);
+    opacity: 1;
+    pointer-events: all;
+    transition: all 0.2s, opacity 0.05s;
 }
 
 .group{

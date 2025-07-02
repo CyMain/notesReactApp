@@ -19,6 +19,22 @@ function Menu(){
         popUp.style.transform = "translateY(0%)";
     }
 
+    function toggleGroupDropDown(){
+        const groupsList = document.querySelector(".groups-list");
+        if(groupsList.style.transform == "translateY(0%)" ){
+            console.log("attempt to close");
+            groupsList.style.transform ="translateY(-100%)";
+            groupsList.style.opacity = 0;
+            groupsList.style.pointerEvents = "none";
+        }else{
+            console.log("attempt to open");
+            groupsList.style.transform ="translateY(0%)";
+            groupsList.style.opacity = 1;
+            groupsList.style.pointerEvents = "all";
+        }
+    }
+
+
     return(
         <header ref = {headerRef}>
             <div className="menu-pop-up-container">
@@ -118,7 +134,7 @@ function Menu(){
                     </div>
                     <div className="lg-menu-bottom-half">
                         <nav className="lg-menu-bottom-top">
-                            <span className="groups-tag">
+                            <span className="groups-tag" onClick={()=>toggleGroupDropDown()}>
                                 <figure className="lg-menu-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 3H4a2 2 0 0 0-2 2v2a2 2 0 0 0 1 1.72V19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.72A2 2 0 0 0 22 7V5a2 2 0 0 0-2-2zM4 5h16v2H4zm1 14V9h14v10z"></path><path d="M8 11h8v2H8z"></path></svg>
                                 </figure>
@@ -127,28 +143,31 @@ function Menu(){
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path></svg>
                                 </figure>
                             </span>
-                            <ul className="groups-list">
-                                {groups.map((group, i)=>
-                                    <li
-                                        key={i}
-                                        className="group"
-                                        onClick={
-                                            (e)=>{
-                                                e.preventDefault();
-                                                filterGroup(group.name)
-                                            }}
-                                    >
-                                        <span className="group-name">{group.name}</span>
-                                        <button
-                                            className="delete-group-btn"
-                                            onClick={() => handleDeleteGroup(group.name)}
-                                            title="Delete group"
+                            <div className="groups-list-container">
+                                <ul className="groups-list">
+                                    {groups.map((group, i)=>
+                                        <li
+                                            key={i}
+                                            className="group"
+                                            onClick={
+                                                (e)=>{
+                                                    e.preventDefault();
+                                                    filterGroup(group.name)
+                                                }}
                                         >
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
-                                        </button>
-                                    </li>
-                                )}
-                            </ul>
+                                            <span className="group-name">{group.name}</span>
+                                            <button
+                                                className="delete-group-btn"
+                                                onClick={() => handleDeleteGroup(group.name)}
+                                                title="Delete group"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+                                            </button>
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                            
                         </nav>
                         <nav className="lg-menu-bottom-bottom">
                             <ul>
