@@ -1,9 +1,9 @@
 :root{
     --note-width:10rem;
-    --row-increment: 1.4rem;
-    --note-small: 3;
+    --row-increment: 1rem;
+    --note-small: 4;
     --note-medium: 6;
-    --note-large:8;
+    --note-large:9;
     --note_border_radius: 0.8rem
 }
 
@@ -79,7 +79,7 @@
 .notes-view{
     position: relative;
     flex-direction: column;
-    gap: 0.6rem;
+    gap: 0.8rem;
     height: 100dvh;
     width:100%;
     padding-right: 0.6rem;
@@ -143,12 +143,12 @@
     scroll-behavior:smooth;
     scrollbar-width: none;
     display:grid;
-    grid-template-columns:repeat(auto-fill, var(--note-width));
-    grid-auto-flow:row;
-    grid-auto-rows: minmax(var(--row-increment));
+    grid-template-columns:repeat(auto-fit, minmax(var(--note-width), 1fr));
+    grid-auto-flow: row;
+    grid-auto-rows: var(--row-increment);
     margin:0;
     padding:0;
-    row-gap: 1rem;
+    row-gap: 1.5rem;
     column-gap: 0.8rem;
     justify-content: start;
 }
@@ -166,10 +166,8 @@
 
 .note{
     background: rgb(var(--accent3));
-    margin:0.5rem;
     border-radius:var(--note_border_radius);
     width: 100%;
-    max-width: var(--note-width);
     box-sizing: border-box;
     height: max-content;
     padding: 0.7rem;
@@ -183,7 +181,12 @@
         font-size: 1rem;
         font-weight: bold;
     }
+    p{
+        max-height: 15rem;
+        overflow: hidden;
+    }
     >*{
+        line-height: 1.05rem;
         font-size: 0.7rem;
         width: 100%;
         overflow: hidden;
@@ -232,10 +235,6 @@
         .add-note-lg{
             display: none;
         }
-    }
-
-    .note{
-        width: 100%;
     }
 }
 

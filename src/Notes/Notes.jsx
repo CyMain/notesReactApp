@@ -192,7 +192,7 @@ function Notes() {
             if (text.length >= 180){
                 return "note-lg note";
             }
-            else if(text.length>= 110){
+            else if(text.length>= 100){
                 return "note-medium note";
             } else{
                 return "note-small note";
