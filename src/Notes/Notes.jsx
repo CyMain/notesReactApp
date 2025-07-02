@@ -80,7 +80,7 @@ function Notes() {
 
     function toggleHeader() {
         if (isEditView == true) {
-            if (window.innerWidth > 450) {
+            if (window.innerWidth > 700) {
                 headerRef.current.style.display = "flex";
             } else {
                 if (isEditView == true) {
@@ -145,7 +145,7 @@ function Notes() {
             // Show edit, hide notes
             setIsEditView(true);
             console.log("opening-edit-view");
-            if (headerRef.current && window.innerWidth <= 450.5) {
+            if (headerRef.current && window.innerWidth <= 700.5) {
                 headerRef.current.style.display = "none";
             }
         }
@@ -156,7 +156,7 @@ function Notes() {
         setEditContent(content);
         setEditingNoteId(id);
         setIsEditView(true);
-        if (headerRef.current && window.innerWidth <= 450.5) {
+        if (headerRef.current && window.innerWidth <= 700.5) {
             headerRef.current.style.display = "none";
         }
     }
