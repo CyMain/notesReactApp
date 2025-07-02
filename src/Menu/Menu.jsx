@@ -4,19 +4,42 @@ import pfp from '../assets/mypfp2.jpg';
 import './menu.css'
 
 function Menu(){
+    const [newGroupName, setNewGroupName] = useState("");
     const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, createNoteAndEdit, filterGroup, filterNotes} = useContext(nameContext);
     const crossTextStyle = {
         textDecoration: "line-through",
         background:"rgb(40, 42, 83)",
+    }
+    function closePopUp(){
+        const popUp = document.querySelector(".menu-pop-up-container");
+        popUp.style.transform = "translateY(100%)";
+    }
+    function openPopUp(){
+        const popUp = document.querySelector(".menu-pop-up-container");
+        popUp.style.transform = "translateY(0%)";
     }
 
     return(
         <header ref = {headerRef}>
             <div className="menu-pop-up-container">
                 <div className="menu-pop-up">
-                    <div className="create-group-pop-up">
-                        <input type="text" className="group-name-input" placeholder="Enter group name..."/>
-                        <button className="creatge-group-button">Create Group</button>
+                    <figure className="close-pop-up" onClick={closePopUp}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+                    </figure>
+                    <div className="create-group-pop-up pop-up">
+                        <input
+                            type="text"
+                            value={newGroupName}
+                            onChange={e => setNewGroupName(e.target.value)}
+                            placeholder="New group name"
+                        />
+                        <button className="creatge-group-button" onClick={() => {
+                            if (newGroupName.trim() && !groups.some(g => g.name === newGroupName.trim())) {
+                                setGroups([...groups, { name: newGroupName.trim() }]);
+                                setNewGroupName("");
+                            }
+                            }}
+                        >Create Group</button>
                     </div>
                     
                 </div>
@@ -72,7 +95,7 @@ function Menu(){
                                     </figure>
                                     Notes
                                 </li>
-                                <li>
+                                <li onClick={()=>openPopUp()}>
                                     <figure className="lg-menu-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M13 9h-2v3H8v2h3v3h2v-3h3v-2h-3z"></path><path d="M20 5h-8.586L9.707 3.293A.996.996 0 0 0 9 3H4c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2h16c1.103 0 2-.897 2-2V7c0-1.103-.897-2-2-2zM4 19V7h16l.002 12H4z"></path></svg>
                                     </figure>
