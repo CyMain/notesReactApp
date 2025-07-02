@@ -79,8 +79,8 @@ function Notes() {
     }
 
     function toggleHeader() {
-        if (editView.current.style.display == "flex") {
-            if (window.innerWidth > 400) {
+        if (isEditView == true) {
+            if (window.innerWidth > 450) {
                 headerRef.current.style.display = "flex";
             } else {
                 if (isEditView == true) {
@@ -145,7 +145,7 @@ function Notes() {
             // Show edit, hide notes
             setIsEditView(true);
             console.log("opening-edit-view");
-            if (headerRef.current && window.innerWidth <= 400.5) {
+            if (headerRef.current && window.innerWidth <= 450.5) {
                 headerRef.current.style.display = "none";
             }
         }
@@ -156,7 +156,7 @@ function Notes() {
         setEditContent(content);
         setEditingNoteId(id);
         setIsEditView(true);
-        if (headerRef.current && window.innerWidth <= 400.5) {
+        if (headerRef.current && window.innerWidth <= 450.5) {
             headerRef.current.style.display = "none";
         }
     }
@@ -179,7 +179,7 @@ function Notes() {
 
 
     function decideNoteSize(title,text) {
-        if(title.length>= 10){
+        if(title.length>= 200){
             if (text.length >= 100){
                 return "note-lg note";
             }
@@ -189,10 +189,10 @@ function Notes() {
                 return "note-small note";
             }    
         } else{
-            if (text.length >= 150){
+            if (text.length >= 180){
                 return "note-lg note";
             }
-            else if(text.length>= 100){
+            else if(text.length>= 110){
                 return "note-medium note";
             } else{
                 return "note-small note";
@@ -232,7 +232,7 @@ function Notes() {
                         >
                             <h1>{note.title}</h1>
                             <p>{note.content}</p>
-                            <span>{getDateString(note.yearCreated, note.monthCreated, note.dayCreated, note.hourCreated, note.minuteCreated)}</span>
+                            <span className="note-creation-date">{getDateString(note.yearCreated, note.monthCreated, note.dayCreated, note.hourCreated, note.minuteCreated)}</span>
                             <div className="note-bottom">
                                 <span>{note.group ? note.group : "No Group"}</span>
                                 <div className="note-buttons">
