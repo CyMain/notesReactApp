@@ -57,7 +57,6 @@ function Menu(){
                             }}
                         >Create Group</button>
                     </div>
-                    
                 </div>
             </div>
             <div className="header-top">

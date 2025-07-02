@@ -6,7 +6,6 @@ header{
 
 
 .menu-pop-up-container{
-    
     position: fixed;
     display: flex;
     align-items: center;
@@ -15,6 +14,7 @@ header{
     width: 100vw;
     height: 100dvh;
     background: rgb(var(--accent1), 0.4);
+    transform: translateY(100%);
     >.menu-pop-up{
         position: relative;
         display: flex;
