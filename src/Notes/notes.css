@@ -147,6 +147,11 @@
         font-size: 0.6rem;
         text-wrap: nowrap;
     }
+    svg{
+        width: 1rem;
+        height: 1rem;    
+    }
+    
 }
 
 /* .notes-grid{
