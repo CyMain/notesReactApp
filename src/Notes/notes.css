@@ -124,6 +124,10 @@
         display: flex;
         gap: 1rem;
         >.nav-option{
+            
+            display: flex;
+            align-items: center;
+            width: max-content;
             cursor: pointer;
             font-size: 0.8rem;
             
@@ -133,6 +137,16 @@
         }
     }
 
+}
+
+.reset-btn{
+    width: max-content;
+    gap: 0.5rem;
+    
+    span{
+        font-size: 0.6rem;
+        text-wrap: nowrap;
+    }
 }
 
 /* .notes-grid{
