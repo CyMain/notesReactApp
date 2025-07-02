@@ -284,6 +284,18 @@ function Notes() {
                     value={editContent}
                     onChange={e => setEditContent(e.target.value)}
                 ></textarea>
+                {/* <label>
+                    Group:
+                    <select
+                        value={editGroup}
+                        onChange={e => setEditGroup(e.target.value)}
+                    >
+                        <option value="">No Group</option>
+                        {groups.map((g, i) => (
+                            <option key={i} value={g.name}>{g.name}</option>
+                        ))}
+                    </select>
+                </label> */}
                 <button className="finish-edit-view-btn" onClick={handleDoneEdit}>Done</button>
             </div>
         </>

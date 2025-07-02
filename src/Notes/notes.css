@@ -3,7 +3,7 @@
     --row-increment: 1.4rem;
     --note-small: 3;
     --note-medium: 6;
-    --note-large:10;
+    --note-large:8;
     --note_border_radius: 0.8rem
 }
 
@@ -145,7 +145,7 @@
     display:grid;
     grid-template-columns:repeat(auto-fill, var(--note-width));
     grid-auto-flow:row;
-    grid-auto-rows: var(--row-increment);
+    grid-auto-rows: minmax(var(--row-increment));
     margin:0;
     padding:0;
     row-gap: 1rem;
@@ -249,11 +249,4 @@
     .sections{
         padding-right: 1rem;
     }
-    .notes-grid{
-        /* grid-template-columns: repeat(auto-fill, minmax(150px, 13rem)); */
-        
-    }
-
-    
-
 }
