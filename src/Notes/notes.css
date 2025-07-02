@@ -1,9 +1,9 @@
 :root{
     --note-width:10rem;
     --row-increment: 4px;
-    --note-small: 6;
-    --note-medium: 9;
-    --note-large:12;
+    --note-small: 7;
+    --note-medium: 10;
+    --note-large:15;
     --note_border_radius: 0.8rem
 }
 
@@ -77,11 +77,13 @@
     >.group-select-container{
         width: 100%;
         display: flex;
+        align-items: center;
         justify-content: space-between;
         font-size: 0.8rem;
         >.group-select{
             width: 100%;
             font-size: 0.8rem;
+            height: 2.5rem;
             background: transparent;
             >option{
                 background: rgb(var(--accent1));

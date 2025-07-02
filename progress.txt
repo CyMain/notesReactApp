@@ -1,15 +1,19 @@
 Tasks:
-    trigger sliding down and up animation for groups list
+    
+    opening edit view on mobile should display none mobile header.
     make new note id bro.
-    make the right nav of the .sections in the note view to have a 3 dot menu that drops down so you can see "sort by"
 
-Errors:
-     name changes to null randomly
+Errors:     
     when switching from large screen to small screen, the header turns to display none even tho
         edit view is closed. This is because of a useEffect rect hook active on window resize.
     
 Done:
-Adjust conditions for deciding notes size class(notes.jsx);
+    name changes to null randomly
+    when edit view is open, make sure pressing any other section disables editview and goes to that section. Like pressing notes
+    trigger sliding down and up animation for groups list
+    change mobile menu icons and implement functionality
+            (NOTES, Groups, createGroup and Trash)
+    Adjust conditions for deciding notes size class(notes.jsx);
     add trash functionality
     make trash button on menu open trashed items only 
     create "create-note" functionality
