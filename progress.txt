@@ -1,16 +1,16 @@
 Tasks:
-    make trash button on menu open trashed items only 
-    add trash functionality
     make new note id bro.
-    Adjust conditions for deciding notes size class(notes.jsx);
+    make the right nav of the .sections in the note view to have a 3 dot menu that drops down so you can see "sort by"
 
 Errors:
      name changes to null randomly
     when switching from large screen to small screen, the header turns to display none even tho
         edit view is closed. This is because of a useEffect rect hook active on window resize.
     
-
 Done:
+Adjust conditions for deciding notes size class(notes.jsx);
+    add trash functionality
+    make trash button on menu open trashed items only 
     create "create-note" functionality
     create editting functionality
     fix the editing and notes-grid view. make it the rest of the screen width;

@@ -2,7 +2,7 @@
     --note-width:10rem;
     --row-increment: 1.4rem;
     --note-small: 3;
-    --note-medium: 8;
+    --note-medium: 5;
     --note-large:10;
     --note_border_radius: 0.8rem
 }
@@ -181,12 +181,14 @@
     }
     h1{
         font-size: 1rem;
+        font-weight: bold;
     }
     >*{
         font-size: 0.7rem;
         width: 100%;
         overflow: hidden;
         word-break: break-all;
+        cursor: default;
     }
     >.note-bottom{
         display: flex;

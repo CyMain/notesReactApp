@@ -31,7 +31,7 @@ function Notes() {
                             return `${date.getMinutes() - mins} minute(s) ago`;
                         }
                     } else {
-                        return `${date.getHours() - hours}hour(s) ago`;
+                        return `${date.getHours() - hours} hour(s) ago`;
                     }
                 } else {
                     return `${date.getDate() - day} day(s) ago`
@@ -180,10 +180,10 @@ function Notes() {
 
     function decideNoteSize(title,text) {
         if(title.length>= 10){
-            if (text.length >= 250){
+            if (text.length >= 100){
                 return "note-lg note";
             }
-            else if(text.length>= 100){
+            else if(text.length>= 50){
                 return "note-medium note";
             } else{
                 return "note-small note";
@@ -192,7 +192,7 @@ function Notes() {
             if (text.length >= 150){
                 return "note-lg note";
             }
-            else if(text.length>= 90){
+            else if(text.length>= 100){
                 return "note-medium note";
             } else{
                 return "note-small note";
@@ -210,7 +210,7 @@ function Notes() {
             >
                 <nav className="sections">
                     <div className="left-nav">
-                        <span className="nav-option" onClick={filterAll}>Notes</span>
+                        <span className="nav-option" onClick={(e)=>{e.preventDefault();filterGroup("All")}}>Notes</span>
                         <span className="nav-option" onClick={filterFavs}>Favourites</span>
                     </div>
                     <div className="right-nav">
