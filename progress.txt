@@ -4,7 +4,9 @@ Tasks:
 
 Errors:         
     
+    
 Done:
+    opening edit view by clicking a note on small screens retains header;
     edit view is closed. This is because of a useEffect rect hook active on window resize.
     when switching from large screen to small screen, the header turns to display none even tho
     opening edit view on mobile should display none mobile header.
