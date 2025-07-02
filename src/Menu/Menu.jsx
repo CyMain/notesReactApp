@@ -6,6 +6,7 @@ import './menu.css'
 function Menu(){
     const [newGroupName, setNewGroupName] = useState("");
     const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup} = useContext(nameContext);
+    const [searchQuery, setSearchQuery] = useState("");
     const crossTextStyle = {
         textDecoration: "line-through",
         background:"rgb(40, 42, 83)",
@@ -34,6 +35,37 @@ function Menu(){
         }
     }
 
+    function handleSearch(query) {
+        let filtered = notes;
+
+        // Filter by group/trash/all
+        if (currFilter === "Trash") {
+            filtered = filtered.filter(note => note.trashed);
+        } else if (currFilter === "favourites") {
+            filtered = filtered.filter(note => note.fav && !note.trashed);
+        } else if (currFilter === "All") {
+            filtered = filtered.filter(note => !note.trashed);
+        } else {
+            filtered = filtered.filter(note => note.group === currFilter && !note.trashed);
+        }
+
+        // Filter by search query (case-insensitive)
+        if (query.trim() !== "") {
+            const q = query.trim().toLowerCase();
+            filtered = filtered.filter(
+                note =>
+                    note.title.toLowerCase().includes(q) ||
+                    note.content.toLowerCase().includes(q)
+            );
+        }
+
+        setCurrNotes(filtered);
+    }
+
+    useEffect(() => {
+        handleSearch(searchQuery);
+        // eslint-disable-next-line
+    }, [currFilter, notes]);
 
     return(
         <header ref = {headerRef}>
@@ -69,7 +101,17 @@ function Menu(){
                         <p className="greeting">Good day</p>
                     </div>
                 </div>
-                <input type="text" className="input-search" placeholder="Find Anything"/>
+                <input
+                     type="text"
+                    className="input-search"
+                    placeholder="Find Anything"
+                    value={searchQuery}
+                    onChange={e => {
+                        const value = e.target.value;
+                        setSearchQuery(value);
+                        handleSearch(value);
+                    }}
+                 />
             </div>
             <div className="header-bottom">
                 <div className="options-mobile">
@@ -95,7 +137,6 @@ function Menu(){
                 </div>
                 <div className="options-lg">
                     <div className="lg-menu-top-half">
-                        <button>Find Anything</button>
                         <nav>
                             <ul>
                                 <li style={crossTextStyle}>
