@@ -7,7 +7,7 @@ export const nameContext = createContext();
 
 function MainComponent(){
 
-    
+    const [showResetPopup, setShowResetPopup] = useState(false);
     const [hasName, setHasName] = useState();
     const [username, setUsername] = useState("");
     const editView = useRef(null);
@@ -26,27 +26,27 @@ function MainComponent(){
         return stored ? JSON.parse(stored) : [
             {
                 id:1,
-                title: "Progress Report",
-                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
+                title: "Welcome To CyNotes",
+                content:"Features:\n\tCreate notes\n\tOrganize Notes with Groups\n\tTrash Notes\n\tEdit Your Notes at will.",
                 yearCreated: 2024,
                 monthCreated:2,
                 dayCreated:23,
                 hourCreated:12,
                 minuteCreated:20,
-                group:"",
+                group:"Intro",
                 fav: false,
                 trashed:false,
             },
             {
                 id:2,
-                title: "Progress Report",
-                content:"This notes app has made considerable progress if we do not count the many breaks and pauses that have been taken.",
+                title: "Delete",
+                content:"This is your trash. All your trash notes can be found here and restored or permanently deleted.",
                 yearCreated: 2025,
                 monthCreated:5,
                 dayCreated:28,
                 hourCreated:22,
                 minuteCreated:33,
-                group:"",
+                group:"Intro",
                 fav: true,
                 trashed:true,
             },
@@ -56,9 +56,7 @@ function MainComponent(){
         const stored = localStorage.getItem("storedGroups");
         return stored ? JSON.parse(stored) : [
             {
-                name:"Sonic Heroes",
-            },{
-                name:"Shadow Heroes",
+                name:"Intro",
             }
         ]
     });
@@ -74,6 +72,7 @@ function MainComponent(){
         setCurrNotes(c=> filterNotes(notes, group));
     }
     function filterNotes(notesList, filterword) {
+        setCurrFilter(filterword);
         if (filterword === "Trash") {
             return notesList.filter(note => note.trashed);
         } else if (filterword === "favourites") {
@@ -183,7 +182,7 @@ function MainComponent(){
     }else{
         return(
             <>
-                <nameContext.Provider value = {{name: username, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup}}>
+                <nameContext.Provider value = {{name: username, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup, showResetPopup, setShowResetPopup}}>
                     <Menu/>
                     <Notes/>
                 </nameContext.Provider>

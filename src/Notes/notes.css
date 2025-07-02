@@ -268,6 +268,53 @@
     box-shadow: 0 0 6px rgb(var(--accent1), 0.8);
     z-index: 50;
 }
+.menu-reset-pop-up-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(var(--accent1), 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.menu-pop-up {
+    background: rgb(var(--accent1), 0.9);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+    text-align: center;
+}
+.reset-popup-buttons {
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-around;
+    margin-top: 1rem;
+    button{
+        height: 2rem;
+        padding: 0 2rem;
+        border-radius: 0.6rem;
+        background: transparent;
+        border:1px solid rgb(var(--accent3));
+        &:first-of-type{
+            &:hover{
+                background: rgb(var(--accent3));    
+            }
+            
+        }
+        &:last-of-type{
+            &:hover{
+                background: red;    
+            }
+            
+
+        }
+        
+    }
+}
 
 @media (max-width:700px) {
     .notes-view{

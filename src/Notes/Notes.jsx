@@ -3,7 +3,7 @@ import { nameContext } from "../MainComponent/MainComponent.jsx";
 import './notes.css'
 
 function Notes() {
-    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup} = useContext(nameContext);
+    const {name, editView, notesView, headerRef, notes, setNotes, currNotes, setCurrNotes, currFilter, setCurrFilter, isEditView, setIsEditView, editingNoteId, setEditingNoteId, editTitle, setEditTitle, editContent, setEditContent, date, groups, setGroups, editGroup, setEditGroup, createNoteAndEdit, filterGroup, filterNotes, handleDeleteGroup, showResetPopup, setShowResetPopup} = useContext(nameContext);
 
     useEffect(() => {
         localStorage.setItem("storedNotes", JSON.stringify(notes))
@@ -58,8 +58,6 @@ function Notes() {
     function filterFavs() {
         setCurrNotes(c => filterNotes(c, "favourites"));
     }
-
-
     function favouriteNote(id) {
         setNotes(prevNotes => {
             const newNotes = prevNotes.map(note =>
@@ -223,8 +221,8 @@ function Notes() {
                         <span className="nav-option" onClick={filterFavs}>Favourites</span>
                     </div>
                     <div className="right-nav">
-                        <figure className="nav-option">
-                            <span>Reset Notes</span>
+                        <figure className="nav-option reset-btn"  onClick={() => {setShowResetPopup(true)}}>
+                            <span>Reset CyNotes</span>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 16c1.671 0 3-1.331 3-3s-1.329-3-3-3-3 1.331-3 3 1.329 3 3 3z"></path><path d="M20.817 11.186a8.94 8.94 0 0 0-1.355-3.219 9.053 9.053 0 0 0-2.43-2.43 8.95 8.95 0 0 0-3.219-1.355 9.028 9.028 0 0 0-1.838-.18V2L8 5l3.975 3V6.002c.484-.002.968.044 1.435.14a6.961 6.961 0 0 1 2.502 1.053 7.005 7.005 0 0 1 1.892 1.892A6.967 6.967 0 0 1 19 13a7.032 7.032 0 0 1-.55 2.725 7.11 7.11 0 0 1-.644 1.188 7.2 7.2 0 0 1-.858 1.039 7.028 7.028 0 0 1-3.536 1.907 7.13 7.13 0 0 1-2.822 0 6.961 6.961 0 0 1-2.503-1.054 7.002 7.002 0 0 1-1.89-1.89A6.996 6.996 0 0 1 5 13H3a9.02 9.02 0 0 0 1.539 5.034 9.096 9.096 0 0 0 2.428 2.428A8.95 8.95 0 0 0 12 22a9.09 9.09 0 0 0 1.814-.183 9.014 9.014 0 0 0 3.218-1.355 8.886 8.886 0 0 0 1.331-1.099 9.228 9.228 0 0 0 1.1-1.332A8.952 8.952 0 0 0 21 13a9.09 9.09 0 0 0-.183-1.814z"></path></svg>
                         </figure>
                     </div>
@@ -233,7 +231,7 @@ function Notes() {
                     {currNotes.map((note) =>
                         <div
                             className={decideNoteSize(note.title,note.content) +
-                                (currFilter === "All" && note.trashed ? " trashed-note" : "")}
+                                (currFilter === "Trash" && note.trashed ? " trashed-note" : "")}
                             key={note.id}
                             onClick={() =>{toggleEditView("", "");editNote(note.title, note.content, note.id)}}
                         >
@@ -243,23 +241,31 @@ function Notes() {
                             <div className="note-bottom">
                                 <span>{note.group ? note.group : "No Group"}</span>
                                 <div className="note-buttons">
-                                    {currFilter === "Trash" ? (
+                                    {currFilter == "Trash" ? (
                                         <>
-                                            <button className="restore-note-btn btn" onClick={e => {e.stopPropagation();restoreNote(note.id);}}>Restore</button>
-                                            <button className="delete-note-btn btn" onClick={ e => {e.stopPropagation();deleteNotePermanently(note.id);}}>Delete Forever</button>
+                                            <button className="restore-note-btn btn" onClick={e => {e.stopPropagation();restoreNote(note.id);}}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm3.293 14.707L11 12.414V6h2v5.586l3.707 3.707-1.414 1.414z"></path></svg>
+                                            </button>
+                                            <button className="delete-note-btn btn" onClick={ e => {e.stopPropagation();deleteNotePermanently(note.id);}}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6 7H5v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7H6zm10.618-3L15 2H9L7.382 4H3v2h18V4z"></path></svg>
+                                            </button>
                                         </>
                                     ) : (
-                                        <button className="trash-note-btn btn" onClick={e => {e.stopPropagation();trashNote(note.id);}}>
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path><path d="M9 10h2v8H9zm4 0h2v8h-2z"></path></svg>
-                                        </button>
+                                        <>
+                                            <button className="trash-note-btn btn" onClick={e => {e.stopPropagation();trashNote(note.id);}}>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z"></path><path d="M9 10h2v8H9zm4 0h2v8h-2z"></path></svg>
+                                            </button>
+                                            <figure className="fav-icon" onClick={e => { e.stopPropagation(); favouriteNote(note.id); }}>
+                                                {note.fav ?
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>
+                                                    :
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412l7.332 7.332c.17.299.498.492.875.492a.99.99 0 0 0 .792-.409l7.415-7.415c2.354-2.354 2.354-6.049-.002-8.416a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595zm6.791 1.61c1.563 1.571 1.564 4.025.002 5.588L12 18.586l-6.793-6.793c-1.562-1.563-1.561-4.017-.002-5.584.76-.756 1.754-1.172 2.799-1.172s2.035.416 2.789 1.17l.5.5a.999.999 0 0 0 1.414 0l.5-.5c1.512-1.509 4.074-1.505 5.584-.002z"></path></svg>
+                                                }
+                                            </figure>
+                                        </>
+                                        
                                     )}
-                                    <figure className="fav-icon" onClick={e => { e.stopPropagation(); favouriteNote(note.id); }}>
-                                        {note.fav ?
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.205 4.791a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412L12 21.414l8.207-8.207c2.354-2.353 2.355-6.049-.002-8.416z"></path></svg>
-                                            :
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 4.595a5.904 5.904 0 0 0-3.996-1.558 5.942 5.942 0 0 0-4.213 1.758c-2.353 2.363-2.352 6.059.002 8.412l7.332 7.332c.17.299.498.492.875.492a.99.99 0 0 0 .792-.409l7.415-7.415c2.354-2.354 2.354-6.049-.002-8.416a5.938 5.938 0 0 0-4.209-1.754A5.906 5.906 0 0 0 12 4.595zm6.791 1.61c1.563 1.571 1.564 4.025.002 5.588L12 18.586l-6.793-6.793c-1.562-1.563-1.561-4.017-.002-5.584.76-.756 1.754-1.172 2.799-1.172s2.035.416 2.789 1.17l.5.5a.999.999 0 0 0 1.414 0l.5-.5c1.512-1.509 4.074-1.505 5.584-.002z"></path></svg>
-                                        }
-                                    </figure>
+                                    
                                 </div>
                             </div>
 
@@ -275,7 +281,18 @@ function Notes() {
                 ref={editView}
                 style={{ display: isEditView ? "flex" : "none" }}
             >
-                <button className="close-edit-view-btn" onClick={() => toggleEditView("", "")}>
+                <button
+                    className="close-edit-view-btn"
+                    onClick={() => {
+                        // If both fields are empty, treat as cancel and delete the note
+                        if (editTitle.trim() === "" && editContent.trim() === "") {
+                            // Remove the note with editingNoteId from notes
+                            setNotes(prevNotes => prevNotes.filter(note => note.id !== editingNoteId));
+                            setCurrNotes(curr => curr.filter(note => note.id !== editingNoteId));
+                        }
+                        toggleEditView("", "");
+                    }}
+                >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M21 11H6.414l5.293-5.293-1.414-1.414L2.586 12l7.707 7.707 1.414-1.414L6.414 13H21z"></path></svg>
                 </button>
                 <input
@@ -306,6 +323,67 @@ function Notes() {
                 </label>
                 <button className="finish-edit-view-btn" onClick={handleDoneEdit}>Done</button>
             </div>
+            {showResetPopup && (
+                <div className="menu-reset-pop-up-container">
+                    <div className="menu-pop-up">
+                        <p>Are you sure you want to erase all your CyNotes data?</p>
+                        <div className="reset-popup-buttons">
+                            <button onClick={() => setShowResetPopup(false)}>Cancel</button>
+                            <button
+                                onClick={() => {
+                                    // Reset all localStorage
+                                    localStorage.removeItem("storedNotes");
+                                    localStorage.removeItem("storedGroups");
+                                    localStorage.removeItem("username");
+                                    // Reset all useStates to initial values
+                                    setNotes([
+                                        {
+                                            id:1,
+                                            title: "Welcome To CyNotes",
+                                            content:"Features:\n\tCreate notes\n\tOrganize Notes with Groups\n\tTrash Notes\n\tEdit Your Notes at will.",
+                                            yearCreated: 2024,
+                                            monthCreated:2,
+                                            dayCreated:23,
+                                            hourCreated:12,
+                                            minuteCreated:20,
+                                            group:"Intro",
+                                            fav: false,
+                                            trashed:false,
+                                        },
+                                        {
+                                            id:2,
+                                            title: "Delete",
+                                            content:"This is your trash. All your trash notes can be found here and restored or permanently deleted.",
+                                            yearCreated: 2025,
+                                            monthCreated:5,
+                                            dayCreated:28,
+                                            hourCreated:22,
+                                            minuteCreated:33,
+                                            group:"Intro",
+                                            fav: true,
+                                            trashed:true,
+                                        },
+                                    ]);
+                                    setGroups([
+                                        { name: "Intro" }
+                                    ]);
+                                    setCurrNotes([]);
+                                    setCurrFilter("All");
+                                    setIsEditView(false);
+                                    setEditingNoteId(null);
+                                    setEditTitle("");
+                                    setEditContent("");
+                                    setEditGroup("");
+                                    setShowResetPopup(false);
+                                    window.location.reload();
+                                }}
+                            >
+                                Continue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     )
 

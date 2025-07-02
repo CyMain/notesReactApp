@@ -1,14 +1,19 @@
 Tasks:
-    if title and content are empty in edit view, backbutton should erase empty note.
+    reset notes functionality
+    when switching from large screen to small screen, the header turns to display none even tho
     make new note id bro.//nah
 
-Errors:         
+Errors:       
     
-    
+    when switching from mobile view to large view, the notes view maintains its mobile view width
+        
 Done:
+    pressing the trash button on trashed notes brings them back.
+    add a restore button for trashed notes.
+    if title and content are empty in edit view, backbutton should erase empty note.
     opening edit view by clicking a note on small screens retains header;
     edit view is closed. This is because of a useEffect rect hook active on window resize.
-    when switching from large screen to small screen, the header turns to display none even tho
+    
     opening edit view on mobile should display none mobile header.
     name changes to null randomly
     when edit view is open, make sure pressing any other section disables editview and goes to that section. Like pressing notes

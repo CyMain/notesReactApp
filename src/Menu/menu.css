@@ -16,15 +16,17 @@ header{
     background: rgb(var(--accent1), 0.4);
     transform: translateY(100%);
     >.menu-pop-up{
+        background: rgb(var(--accent1), 0.9);
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+        text-align: center;
         position: relative;
         display: flex;
         align-items: center;
         width: max-content;
         min-height: 7rem;
         height: 20dvh;
-        background: rgb(var(--accent1));
-        box-shadow: 0 0 1rem 1rem rgb(var(--accent2), 0.2);
-        border-radius: 1rem;
         >.close-pop-up{
             cursor: pointer;
             position: absolute;
